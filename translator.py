@@ -2,6 +2,7 @@ from googletrans import Translator, LANGUAGES
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+# Translator instance
 translator = Translator()
 
 # Create language mapping
@@ -28,32 +29,83 @@ def translate_text():
         output_text.delete("1.0", tk.END)
         output_text.insert(tk.END, translated)
 
-    except Exception as e:
+    except Exception:
         messagebox.showerror("Error", "Translation failed")
 
-# UI setup
+# ================= UI SETUP =================
+
 root = tk.Tk()
 root.title("Language Translator")
-root.geometry("500x420")
+root.geometry("500x430")
+root.configure(bg="#1e1e2f")
 
-tk.Label(root, text="Translate From").pack()
+style = ttk.Style()
+style.theme_use("default")
+
+style.configure(
+    "TCombobox",
+    fieldbackground="#2a2a3d",
+    background="#2a2a3d",
+    foreground="#ffffff"
+)
+
+style.configure(
+    "TButton",
+    background="#4f46e5",
+    foreground="#ffffff",
+    font=("Segoe UI", 10, "bold"),
+    padding=6
+)
+
+style.map(
+    "TButton",
+    background=[("active", "#4338ca")]
+)
+
+label_style = {
+    "bg": "#1e1e2f",
+    "fg": "#f1f1f1",
+    "font": ("Segoe UI", 10)
+}
+
+# ================= UI ELEMENTS =================
+
+tk.Label(root, text="Translate From", **label_style).pack()
 from_lang = ttk.Combobox(root, values=language_names, state="readonly")
-from_lang.pack()
+from_lang.pack(pady=4)
 from_lang.set("English")
 
-tk.Label(root, text="Translate To").pack(pady=(10, 0))
+tk.Label(root, text="Translate To", **label_style).pack(pady=(10, 0))
 to_lang = ttk.Combobox(root, values=language_names, state="readonly")
-to_lang.pack()
+to_lang.pack(pady=4)
 to_lang.set("Hindi")
 
-tk.Label(root, text="Enter Text").pack(pady=(10, 0))
-input_text = tk.Text(root, height=5, width=55)
-input_text.pack()
+tk.Label(root, text="Enter Text", **label_style).pack(pady=(10, 0))
+input_text = tk.Text(
+    root,
+    height=5,
+    width=55,
+    bg="#2a2a3d",
+    fg="#ffffff",
+    insertbackground="white",
+    relief="flat"
+)
+input_text.pack(pady=4)
 
-tk.Button(root, text="Translate", command=translate_text).pack(pady=12)
+ttk.Button(root, text="Translate", command=translate_text).pack(pady=14)
 
-tk.Label(root, text="Translated Text").pack()
-output_text = tk.Text(root, height=5, width=55)
-output_text.pack()
+tk.Label(root, text="Translated Text", **label_style).pack()
+output_text = tk.Text(
+    root,
+    height=5,
+    width=55,
+    bg="#2a2a3d",
+    fg="#ffffff",
+    insertbackground="white",
+    relief="flat"
+)
+output_text.pack(pady=4)
+
+# ================= RUN APP =================
 
 root.mainloop()
