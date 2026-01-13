@@ -57,5 +57,3 @@ output_text = tk.Text(root, height=5, width=55)
 output_text.pack()
 
 root.mainloop()
-
-
