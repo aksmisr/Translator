@@ -1,52 +1,60 @@
 from googletrans import Translator, LANGUAGES
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 
 translator = Translator()
 
-language_codes = list(LANGUAGES.keys())
-language_names = [lang.lower() for lang in LANGUAGES.values()]
+# Create language mapping
+lang_name_to_code = {name.title(): code for code, name in LANGUAGES.items()}
+language_names = sorted(lang_name_to_code.keys())
 
 def translate_text():
-    src = from_lang.get().lower()
-    dest = to_lang.get().lower()
-    text = word_entry.get()
+    text = input_text.get("1.0", tk.END).strip()
+    from_language = from_lang.get()
+    to_language = to_lang.get()
 
     if not text:
-        messagebox.showerror("Error", "Please enter text")
+        messagebox.showerror("Error", "Please enter text to translate")
         return
 
-    if ((src in language_codes or src in language_names) and
-        (dest in language_codes or dest in language_names)):
-        try:
-            result = translator.translate(text, src=src, dest=dest).text
-            output_label.config(text=result.capitalize())
-        except:
-            messagebox.showerror("Error", "Translation failed")
-    else:
-        messagebox.showerror("Error", "Invalid language code or name")
+    try:
+        src_code = lang_name_to_code[from_language]
+        dest_code = lang_name_to_code[to_language]
+
+        translated = translator.translate(
+            text, src=src_code, dest=dest_code
+        ).text
+
+        output_text.delete("1.0", tk.END)
+        output_text.insert(tk.END, translated)
+
+    except Exception as e:
+        messagebox.showerror("Error", "Translation failed")
 
 # UI setup
 root = tk.Tk()
 root.title("Language Translator")
-root.geometry("400x300")
+root.geometry("500x420")
 
 tk.Label(root, text="Translate From").pack()
-from_lang = tk.Entry(root)
+from_lang = ttk.Combobox(root, values=language_names, state="readonly")
 from_lang.pack()
+from_lang.set("English")
 
-tk.Label(root, text="Text").pack()
-word_entry = tk.Entry(root, width=40)
-word_entry.pack()
-
-tk.Label(root, text="Translate To").pack()
-to_lang = tk.Entry(root)
+tk.Label(root, text="Translate To").pack(pady=(10, 0))
+to_lang = ttk.Combobox(root, values=language_names, state="readonly")
 to_lang.pack()
+to_lang.set("Hindi")
 
-tk.Button(root, text="Translate", command=translate_text).pack(pady=10)
+tk.Label(root, text="Enter Text").pack(pady=(10, 0))
+input_text = tk.Text(root, height=5, width=55)
+input_text.pack()
 
-output_label = tk.Label(root, text="", wraplength=350, font=("Arial", 12))
-output_label.pack()
+tk.Button(root, text="Translate", command=translate_text).pack(pady=12)
+
+tk.Label(root, text="Translated Text").pack()
+output_text = tk.Text(root, height=5, width=55)
+output_text.pack()
 
 root.mainloop()
 
