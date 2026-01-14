@@ -22,14 +22,14 @@ pip install googletrans==4.0.0-rc1
 ```
 
 ## ▶️ How to Run
-python translator_ui.py
+python translator.py
 
 ## 🖥️ Application Preview
 (Add screenshots here)
 
 ## 📁 Project Structure
 language-translator/
-├── translator_ui.py
+├── translator.py
 ├── README.md
 
 ## 🚀 Future Enhancements
