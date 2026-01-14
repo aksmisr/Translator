@@ -15,9 +15,11 @@ A simple and elegant desktop language translator built using Python and Tkinter 
 - googletrans
 
 ## 📦 Installation
+```bash
 git clone https://github.com/your-username/language-translator.git
 cd language-translator
 pip install googletrans==4.0.0-rc1
+```
 
 ## ▶️ How to Run
 python translator_ui.py
